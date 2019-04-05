@@ -1,6 +1,8 @@
 # Import the necessary packages
 import imutils
 import cv2
+from win32api import GetSystemMetrics
+from cmath import sqrt
   
 # Load the image, convert it to grayscale, and blur it slightly
 image = cv2.imread("Plant.jpg")
@@ -25,20 +27,26 @@ cv2.rectangle(image, (x,y), (x+w,y+h), (255,255,255), 1)
 distanceX = x+w
 distanceY = y+h
  
+# Calculating monitor DPI
+# DPI = sqrt(WidthResolution^2+HeightResolution^2) / ScreenSize.
+screenSize = 17 # Change this to your screen size!
+widthResolution = GetSystemMetrics(0)
+heightResolution = GetSystemMetrics(1)
+diagonalResolution = sqrt(widthResolution**2 + heightResolution**2)
+monitorDPI = round(diagonalResolution.real / screenSize, 2)
+
 # Convert width and height from pixels to mm units
 # The formula is: mm = (pixels * 25.4) / DPI
-# 129.5 represents the screen DPI = sqrt(WidthResolution^2+HeightResolution^2) / ScreenSize.
-# e.g: sqrt(1920^2+1080^2) / 17 = 129.5 DPI
-mmWidth = ((distanceX * 25.4)/129.5) 
-mmHeight = ((distanceY*25.4)/129.5) 
+mmWidth = ((distanceX * 25.4) / monitorDPI) 
+mmHeight = ((distanceY * 25.4) / monitorDPI) 
 
 # Convert width and height from mm units to cm units
 cmWidth = mmWidth / 10
 cmHeight = mmHeight / 10
 
 # Print width and height in cm units
-stringWidth = "Plant width is: "+str(cmWidth)+" cm"
-stringHeight = "Plant height is: "+str(cmHeight)+" cm"
+stringWidth = "Plant width is: "+str(round(cmWidth, 2))+" cm"
+stringHeight = "Plant height is: "+str(round(cmHeight, 2))+" cm"
 print(stringWidth)
 print(stringHeight)
 

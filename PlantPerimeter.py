@@ -1,6 +1,8 @@
 # Import the necessary packages
 import imutils
 import cv2 as cv
+from win32api import GetSystemMetrics
+from cmath import sqrt
 
 # Load the image, convert it to grayscale and blur it slightly
 img = cv.imread('Plant.jpg')
@@ -28,15 +30,24 @@ while i < len(contours):
     perimeter = perimeter + cv.arcLength(cnt, True)
     i = i + 1
 
+# Calculating monitor DPI
+# DPI = sqrt(WidthResolution^2+HeightResolution^2) / ScreenSize.
+# e.g: sqrt(1920^2+1080^2) / 17 = 129.5 DPI
+screenSize = 17
+widthResolution = GetSystemMetrics(0)
+heightResolution = GetSystemMetrics(1)
+diagonalResolution = sqrt(widthResolution**2 + heightResolution**2)
+monitorDPI = round(diagonalResolution.real / screenSize, 2)
+
 # Convert plant perimeter from pixels to mm
 # The formula is: mm = (pixels * 25.4) / DPI
-perimeter = (perimeter * 25.4) / 129.5;
+perimeter = (perimeter * 25.4) / monitorDPI;
 
 # Convert plant perimeter from mm to cm
 perimeter = perimeter / 10;
 
 # Print perimeter
-strPerimeter = "Plant Perimeter is: "+str(perimeter)+" cm"
+strPerimeter = "Plant Perimeter is: "+str(round(perimeter,2))+" cm"
 print(strPerimeter)
 
 # Show the output image
