@@ -32,4 +32,3 @@ print(strArea)
 # Show the output image
 cv.imshow("Plant Area", img)
 cv.waitKey(0)
-

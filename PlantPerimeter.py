@@ -42,12 +42,3 @@ print(strPerimeter)
 # Show the output image
 cv.imshow("Plant Perimeter", img)
 cv.waitKey(0)
-
-
-
-#===============================================================================
-# area = cv.contourArea(cnt)
-# print(area)
-# perimeter = cv.arcLength(cnt,True)
-# print(perimeter)
-#===============================================================================
