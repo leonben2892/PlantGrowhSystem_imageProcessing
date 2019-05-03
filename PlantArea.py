@@ -1,34 +1,30 @@
-# Import the necessary packages
-import cv2 as cv
+import cv2
 
 # Load the image, convert it to grayscale and blur it slightly
-img = cv.imread('Plant.jpg')
-gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
-gray = cv.GaussianBlur(gray, (5, 5), 0)
-
-# Threshold the image, then perform a series of erosions & dilations to remove any small regions of noise
-thresh = cv.threshold(gray, 45, 255, cv.THRESH_BINARY)[1]
-thresh = cv.erode(thresh, None, iterations=2)
-thresh = cv.dilate(thresh, None, iterations=2)
-
+image = cv2.imread('PlantArea.jpg')
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+gray = cv2.GaussianBlur(gray, (7, 7), 0)
+ 
+# Perform edge detection, then perform a dilation & erosion to close gaps in between object edges
+edged = cv2.Canny(gray, 50, 100)
+edged = cv2.dilate(edged, None, iterations=1)
+edged = cv2.erode(edged, None, iterations=1)
+ 
 # Find contours in thresholded image
-contours, hierarchy = cv.findContours(thresh.copy(), cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+contours,_ = cv2.findContours(edged.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
 # Draw contours
-cv.drawContours(img, contours, -1, (0,255,0), 2)
-
-# Calculate plant surface area
-i=0
-area = 0
-while i < len(contours):
+cv2.drawContours(image, contours, -1, (0,255,0), 2)
+ 
+# Calculate plant front surface area
+plant_front_surface_area = 0
+for i in range(len(contours)):
     cnt = contours[i]
-    area = area + cv.contourArea(cnt)
-    i = i + 1
-
+    plant_front_surface_area = plant_front_surface_area + cv2.contourArea(cnt)
+   
 # Print area
-strArea = "Plant Area is: "+str(area)+" pixels"
-print(strArea)
-
+print("Plant Area is: {} pixels".format(plant_front_surface_area))
+ 
 # Show the output image
-cv.imshow("Plant Area", img)
-cv.waitKey(0)
+cv2.imshow("Plant Area", image)
+cv2.waitKey(0)
