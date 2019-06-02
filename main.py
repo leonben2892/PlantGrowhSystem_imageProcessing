@@ -9,10 +9,8 @@ def https_post(plant_volume, plant_height):
 
 def main():
     plant = PlantData()
-    plant.plant_front("Front.jpg")
-    plant.plant_side("Side.jpg")
-    plant.plant_volume("PlantArea.jpg")
-    print("Plant information:\n{}".format(plant))
+    plant.calculate_plant_data("Bamboo")
+    print("Bamboo Plant information:\n{}".format(plant))
     cv2.imshow("Plant Front", plant.front_image)
     cv2.imshow("Plant Side", plant.side_image)
     cv2.imshow("Plant Front Area", plant.plant_area_image)
