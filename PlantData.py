@@ -1,9 +1,12 @@
 # import the necessary packages
 from BambooCalculations import *
+from SherryCalculations import *
 
 class PlantData():
     
     def __init__(self):
+        self.plant_type = None
+        
         self.length_pixel = 0
         self.length = 0
         
@@ -26,10 +29,20 @@ class PlantData():
     def calculate_plant_data(self, plant_type):
         calculated_plant_data = []
         if plant_type == "Bamboo":
+            self.plant_type = "Bamboo"
             calculated_plant_data.extend(bamboo_front("BambooFront.jpg"))
             calculated_plant_data.extend(bamboo_side("BambooSide.jpg"))
             self.front_image, self.length, self.length_pixel, self.height, self.height_pixel, self.side_image, self.width, self.width_pixel = calculated_plant_data
             calculated_plant_data.clear()
             calculated_plant_data.extend(bamboo_volume("BambooVolume.jpg", self.height, self.height_pixel, self.length, self.length_pixel, self.width, self.width_pixel))
             self.plant_area_image, self.volume = calculated_plant_data
+        elif plant_type == "Sherry":
+            self.plant_type = "Sherry"
+            calculated_plant_data.extend(sherry_front("SherryFront.jpg"))
+            calculated_plant_data.extend(sherry_side("SherrySide.jpg"))
+            self.front_image, self.length, self.length_pixel, self.height, self.height_pixel, self.side_image, self.width, self.width_pixel = calculated_plant_data
+            calculated_plant_data.clear()
+            calculated_plant_data.extend(sherry_volume("SherryVolume.jpg", self.height, self.height_pixel, self.length, self.length_pixel, self.width, self.width_pixel))
+            self.plant_area_image, self.volume = calculated_plant_data
+            
         

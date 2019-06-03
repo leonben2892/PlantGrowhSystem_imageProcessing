@@ -9,11 +9,11 @@ def https_post(plant_volume, plant_height):
 
 def main():
     plant = PlantData()
-    plant.calculate_plant_data("Bamboo")
-    print("Bamboo Plant information:\n{}".format(plant))
-    cv2.imshow("Plant Front", plant.front_image)
-    cv2.imshow("Plant Side", plant.side_image)
-    cv2.imshow("Plant Front Area", plant.plant_area_image)
+    plant.calculate_plant_data("Sherry")
+    print("{} Plant information:\n{}".format(plant.plant_type, plant))
+    cv2.imshow("{} Front".format(plant.plant_type), plant.front_image)
+    cv2.imshow("{} Side".format(plant.plant_type), plant.side_image)
+    cv2.imshow("{} Surface Area".format(plant.plant_type), plant.plant_area_image)
     
     #https_post(plant.volume, plant.height)
     cv2.waitKey(0)

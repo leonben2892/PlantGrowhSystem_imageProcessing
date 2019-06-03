@@ -6,7 +6,7 @@ def bamboo_front(image_name):
     cntsSorted = image_and_sortedcnts[0]
     image = image_and_sortedcnts[1]
     
-    # Bound the ruler in a rectangle in order to calculate the phone width and height in pixels
+    # Bound the ruler in a rectangle in order to calculate the bamboo height & length in pixels
     ruler = cntsSorted[len(cntsSorted)-1]
     xR,yR,wR,hR = cv2.boundingRect(ruler)
     cv2.rectangle(image, (xR,yR), (xR+wR,yR+hR), (0, 255, 0), 2) 
@@ -56,10 +56,11 @@ def bamboo_side(image_name):
     # Calculate plant side width in reference to the ruler height
     percentage_width = round(((wP-60)/hR)*100, 2)
     
-    plant_data_list = []
     width = round((percentage_width/100)*12.5, 2) 
+    
     width_pixel = wP-60
     
+    plant_data_list = []
     plant_data_list.append(draw_image_midpoints(image, 1, (xP+45,yP), (xP+wP-15, yP), (xP+45, yP+hP), (xP+wP-15, yP+hP), 0, 0, width))
     plant_data_list.extend([width, width_pixel])
     return plant_data_list
