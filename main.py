@@ -21,11 +21,10 @@ def main():
     print("{} Plant information:\n{}".format(plant.plant_type, plant))
     cv2.imshow("{} Front".format(plant.plant_type), plant.front_image)
     cv2.imshow("{} Side".format(plant.plant_type), plant.side_image)
-    cv2.imshow("{} Surface Area".format(plant.plant_type), plant.plant_area_image)
+    cv2.imshow("{} Front Surface Area".format(plant.plant_type), plant.plant_area_image)
     
     # plant_id = get_plant_id()
     # send_data_to_server(plant_id, plant.volume, plant.height)
-    # crop_image(200,0,900,800)
     cv2.waitKey(0)
 
 if __name__ == "__main__":
