@@ -16,15 +16,13 @@ def get_plant_id():
 
 
 def main():
+    capture_and_set_images()
     plant = PlantData()
-    plant.calculate_plant_data("Sherry")
-    print("{} Plant information:\n{}".format(plant.plant_type, plant))
-    cv2.imshow("{} Front".format(plant.plant_type), plant.front_image)
-    cv2.imshow("{} Side".format(plant.plant_type), plant.side_image)
-    cv2.imshow("{} Front Surface Area".format(plant.plant_type), plant.plant_area_image)
-    
+    plant.calculate_plant_data()
+    print(plant)
+  
     # plant_id = get_plant_id()
-    # send_data_to_server(plant_id, plant.volume, plant.height)
+    # send_data_to_server(plant_id, plant.plant_volume, plant.plant_height)
     cv2.waitKey(0)
 
 if __name__ == "__main__":

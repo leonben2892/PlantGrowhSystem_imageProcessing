@@ -13,11 +13,11 @@ def image_contours(image_name, calculation_flg):
     edged = cv2.erode(edged, None, iterations=1)
     
     if calculation_flg == 0:
-        # Find contours in the edge map
+        # Find contours in the edge map (for max size)
         cnts = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         cnts = imutils.grab_contours(cnts)
     else:
-        # Find contours in thresholded image
+        # Find contours in the edge map (for area)
         cnts,_ = cv2.findContours(edged.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     
     # Sort contours by area
