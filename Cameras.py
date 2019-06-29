@@ -5,20 +5,20 @@ import numpy as np
 IMAGE_EXTENSION = ".jpg"
 
 def image_capture_from_phone(direction):
-        if direction == "Front":
-                url = "http://192.168.1.41:8080/shot.jpg"
+        if direction == "Side":
+                url = "http://192.168.43.158:8080/shot.jpg"
                 img_resp = requests.get(url)
                 img_arr = np.array(bytearray(img_resp.content), dtype=np.uint8)
                 img = cv2.imdecode(img_arr, -1)
-                cv2.imshow("Front", img)
-                imwrite("Front"+IMAGE_EXTENSION, img)
-        elif direction == "Side":
-                url = "http://192.168.1.45:8080/shot.jpg"
-                img_resp = requests.get(url)
-                img_arr = np.array(bytearray(img_resp.content), dtype=np.uint8)
-                img = cv2.imdecode(img_arr, -1)
-                cv2.imshow("Side", img)  
+                # cv2.imshow("Side", img)
                 imwrite("Side"+IMAGE_EXTENSION, img)
+        elif direction == "Front":
+                url = "http://192.168.43.243:8080/shot.jpg"
+                img_resp = requests.get(url)
+                img_arr = np.array(bytearray(img_resp.content), dtype=np.uint8)
+                img = cv2.imdecode(img_arr, -1)
+                # cv2.imshow("Front", img)  
+                imwrite("Front"+IMAGE_EXTENSION, img)
 
 def resize_image(scale_percent, image_name):
     img = cv2.imread(image_name+IMAGE_EXTENSION)
@@ -63,6 +63,6 @@ def capture_and_set_images():
     image_capture_from_phone("Side")
     resize_image(70, "Front")
     resize_image(70, "Side")
-    crop_image("Front", 250, 20,815, 690, "Ruler")
-    crop_image("Front", 250, 20,815, 690, "Front")
-    crop_image("Side", 250, 20,815, 690, "Side")
+    crop_image(350, 0,720, 450, "Front", "Ruler")
+    crop_image(700, 20,1000, 570,"Front", "Front")
+    crop_image(250, 20,815, 690, "Side", "Side")
