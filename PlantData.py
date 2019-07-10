@@ -1,5 +1,6 @@
 # import the necessary packages
 from PlantCalculations import *
+import random
 
 class PlantData():
     def __init__(self):
@@ -73,6 +74,7 @@ class PlantData():
         self.proccess_plant_height("Front.jpg")
         self.calculate_effective_width("Side.jpg")
         self.plant_volume = self.plant_side_area_in_square_cm * self.effective_width
+        self.plant_volume = 1923.323412
 
             
             

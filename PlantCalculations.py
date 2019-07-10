@@ -18,7 +18,7 @@ def image_contours(image_name, calculation_flg):
         cnts = imutils.grab_contours(cnts)
     else:
         # Find contours in the edge map (for area)
-        cnts,_ = cv2.findContours(edged.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        cnts,_ = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     
     # Sort contours by area
     cntsSorted = sorted(cnts, key=lambda x: cv2.contourArea(x))
