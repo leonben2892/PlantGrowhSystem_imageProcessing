@@ -15,10 +15,17 @@ class PlantData():
         return "Plant Height: {} cm\nPlant Volume: {} cm^3\n".format(self.plant_height, self.plant_volume)
 
     def calculate_pixels_count(self, image_name):
+        # Load the image, convert it to grayscale and blur it slightly
         image = cv2.imread(image_name)
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        ret,thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU)
+        gray = cv2.GaussianBlur(gray, (5, 5), 0)
+        # Threshold the image, then perform a series of erosions + dilations to remove any small regions of noise
+        thresh = cv2.threshold(gray, 45, 255, cv2.THRESH_BINARY)[1]
+        thresh = cv2.erode(thresh, None, iterations=2)
+        thresh = cv2.dilate(thresh, None, iterations=2)
+        # Calculate the number of non-black pixels
         total_nz_pixels = cv2.countNonZero(thresh)
+#         cv2.imshow("Thresh Image", thresh)
         return [total_nz_pixels, thresh]
 
     def proccess_ruler(self, image_name):
@@ -39,7 +46,7 @@ class PlantData():
         plant_side_pixel_count, image = self.calculate_pixels_count(image_name)
         # Convert plant side pixels count to square cm
         self.plant_side_area_in_square_cm =  plant_side_pixel_count / self.pixels_in_square_cm
-        cv2.imshow("Side Area", image)
+#         cv2.imshow("Side Area", image)
 
     def proccess_plant_height(self, image_name):
         image_and_sortedcnts = image_contours(image_name)
@@ -51,7 +58,7 @@ class PlantData():
         cv2.rectangle(image, (xP,yP), (xP+wP,yP+hP), (0, 255, 0), 2)
         # Calculate the plant height in cm
         self.plant_height = (hP/self.ruler_height_in_pixels)*17
-        cv2.imshow("Side Height", image)
+#         cv2.imshow("Side Height", image)
 
     def calculate_effective_width(self, image_name):
         plant_front_pixel_count, image = self.calculate_pixels_count(image_name)

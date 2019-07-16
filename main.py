@@ -25,7 +25,7 @@ def main():
         while not plant_id:
             plant_id = get_request(new_research_url)
             time.sleep(10)
-              
+               
         while get_request(check_research_stopped_url + plant_id) != '"stop"':
             if is_image_proccessing_happend is False:
                 # capture_and_set_images()
