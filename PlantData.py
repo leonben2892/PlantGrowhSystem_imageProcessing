@@ -14,8 +14,15 @@ class PlantData():
     def __str__(self):
         return "Plant Height: {} cm\nPlant Volume: {} cm^3\n".format(self.plant_height, self.plant_volume)
 
+    def calculate_pixels_count(self, image_name):
+        image = cv2.imread(image_name)
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        ret,thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU)
+        total_nz_pixels = cv2.countNonZero(thresh)
+        return [total_nz_pixels, thresh]
+
     def proccess_ruler(self, image_name):
-        image_and_sortedcnts = image_contours(image_name, 0)
+        image_and_sortedcnts = image_contours(image_name)
         cntsSorted = image_and_sortedcnts[0]
         image = image_and_sortedcnts[1]
         # Calculate the ruler height in pixels
@@ -25,48 +32,34 @@ class PlantData():
         self.ruler_height_in_pixels = hR
         # Calculate how many pixels are there in square cm
         self.pixels_in_square_cm = (hR/17)**2
-        cv2.imshow("Ruler", image)
+        # cv2.imshow("Ruler", image)
         
     def process_plant_side_area(self, image_name):
-        image_and_sortedcnts = image_contours(image_name, 1)
-        cntsSorted = image_and_sortedcnts[0]
-        image = image_and_sortedcnts[1]
-        # Draw area contours
-        cv2.drawContours(image, cntsSorted, -1, (0,255,0), 2)
-        # Calculate plant side surface area
-        plant_side_surface_area = 0
-        for i in range(len(cntsSorted)):
-            cnt = cntsSorted[i]
-            plant_side_surface_area = plant_side_surface_area + cv2.contourArea(cnt)
-        # Convert plant side area from pixels to square cm
-        self.plant_side_area_in_square_cm =  plant_side_surface_area / self.pixels_in_square_cm
+        # Calculate plant side pixels count
+        plant_side_pixel_count, image = self.calculate_pixels_count(image_name)
+        # Convert plant side pixels count to square cm
+        self.plant_side_area_in_square_cm =  plant_side_pixel_count / self.pixels_in_square_cm
         cv2.imshow("Side Area", image)
 
     def proccess_plant_height(self, image_name):
-        image_and_sortedcnts = image_contours(image_name, 0)
+        image_and_sortedcnts = image_contours(image_name)
         cntsSorted = image_and_sortedcnts[0]
         image = image_and_sortedcnts[1]
         # Calculate the plant height in pixels
-        plant = cntsSorted[len(cntsSorted)-2]
+        plant = cntsSorted[len(cntsSorted)-1]
         xP,yP,wP,hP = cv2.boundingRect(plant)
-        cv2.rectangle(image, (xP,yP-310), (xP+wP,yP+hP), (0, 255, 0), 2)
-        self.plant_height = ((hP+310)/self.ruler_height_in_pixels)*17
+        cv2.rectangle(image, (xP,yP), (xP+wP,yP+hP), (0, 255, 0), 2)
+        # Calculate the plant height in cm
+        self.plant_height = (hP/self.ruler_height_in_pixels)*17
         cv2.imshow("Side Height", image)
 
     def calculate_effective_width(self, image_name):
-        image_and_sortedcnts = image_contours(image_name, 1)
-        cntsSorted = image_and_sortedcnts[0]
-        image = image_and_sortedcnts[1]
-        # Draw area contours
-        cv2.drawContours(image, cntsSorted, -1, (0,255,0), 2)
-        plant_front_surface_area = 0
-        for i in range(len(cntsSorted)):
-            cnt = cntsSorted[i]
-            plant_front_surface_area = plant_front_surface_area + cv2.contourArea(cnt)
-        # Convert plant front area from pixels to square cm
-        plant_front_area_in_square_cm =  plant_front_surface_area / self.pixels_in_square_cm
+        plant_front_pixel_count, image = self.calculate_pixels_count(image_name)
+        # Convert plant front pixels count to square cm
+        plant_front_area_in_square_cm =  plant_front_pixel_count / self.pixels_in_square_cm
+        # Calculating effective width
         self.effective_width = plant_front_area_in_square_cm / self.plant_height
-        cv2.imshow("Front - Effective width", image)
+        # cv2.imshow("Front - Effective width", image)
 
     def calculate_plant_data(self):
         self.proccess_ruler("Ruler.jpg")
@@ -74,7 +67,6 @@ class PlantData():
         self.proccess_plant_height("Front.jpg")
         self.calculate_effective_width("Side.jpg")
         self.plant_volume = self.plant_side_area_in_square_cm * self.effective_width
-        self.plant_volume = 1923.323412
 
             
             

@@ -1,7 +1,7 @@
 import imutils
 import cv2
 
-def image_contours(image_name, calculation_flg):
+def image_contours(image_name):
     # Load the image, convert it to grayscale, and blur it slightly
     image = cv2.imread(image_name)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -12,14 +12,10 @@ def image_contours(image_name, calculation_flg):
     edged = cv2.dilate(edged, None, iterations=1)
     edged = cv2.erode(edged, None, iterations=1)
     
-    if calculation_flg == 0:
-        # Find contours in the edge map (for max size)
-        cnts = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        cnts = imutils.grab_contours(cnts)
-    else:
-        # Find contours in the edge map (for area)
-        cnts,_ = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    
+    # Find contours in the edge map (for max size)
+    cnts = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    cnts = imutils.grab_contours(cnts)
+   
     # Sort contours by area
     cntsSorted = sorted(cnts, key=lambda x: cv2.contourArea(x))
     return [cntsSorted,image]

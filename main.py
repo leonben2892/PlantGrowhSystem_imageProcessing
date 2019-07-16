@@ -35,8 +35,7 @@ def main():
                 is_image_proccessing_happend = True
             time.sleep(20)
             send_data_to_server(plant_id, plant.plant_volume, plant.plant_height)
-  
-    # cv2.waitKey(0)
+    cv2.waitKey(0)
 
 if __name__ == "__main__":
     main()
