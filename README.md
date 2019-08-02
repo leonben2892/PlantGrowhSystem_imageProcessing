@@ -12,3 +12,10 @@ This is a sub-system that is used to estimate the plant's volume and measure his
 
 ![ImageProcessing3](https://user-images.githubusercontent.com/12692788/62045414-ece10680-b20d-11e9-9f11-784ca94fdaed.jpg)
 
+## Project Video
+<figure class="video_container">
+  <iframe src="https://www.youtube.com/embed/qcWmx6M76gs" frameborder="1" allowfullscreen="true"> </iframe>
+</figure>
+
+### This video shows the system set-up & usage.
+
